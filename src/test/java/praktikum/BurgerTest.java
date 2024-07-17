@@ -24,7 +24,7 @@ public class BurgerTest {
     Bun bun;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         Mockito.when(onion.getName()).thenReturn("onion");
         Mockito.when(onion.getType()).thenReturn(IngredientType.FILLING);
         Mockito.when(onion.getPrice()).thenReturn(1.00F);
@@ -42,14 +42,14 @@ public class BurgerTest {
     }
 
     @Test
-    public void defaultIngredientListIsEmpty(){
+    public void defaultIngredientListIsEmpty() {
         Burger burger = new Burger();
-        Assert.assertEquals(new ArrayList<>(),burger.ingredients);
+        Assert.assertEquals(new ArrayList<>(), burger.ingredients);
     }
 
 
     @Test
-    public void addIngredientsToBurger(){
+    public void addIngredientsToBurger() {
         Burger burger = new Burger();
         burger.addIngredient(onion);
         burger.addIngredient(meat);
@@ -59,11 +59,11 @@ public class BurgerTest {
         expectedIngredients.add(meat);
         expectedIngredients.add(sauce);
 
-        Assert.assertEquals(expectedIngredients,burger.ingredients);
+        Assert.assertEquals(expectedIngredients, burger.ingredients);
     }
 
     @Test
-    public void removeIngredientsFromBurger(){
+    public void removeIngredientsFromBurger() {
         Burger burger = new Burger();
 
         burger.addIngredient(onion);
@@ -76,11 +76,11 @@ public class BurgerTest {
 
         burger.removeIngredient(2);
 
-        Assert.assertEquals(expectedIngredients,burger.ingredients);
+        Assert.assertEquals(expectedIngredients, burger.ingredients);
     }
 
     @Test
-    public void changeIngredientsOrder(){
+    public void changeIngredientsOrder() {
         Burger burger = new Burger();
 
         burger.addIngredient(onion);
@@ -92,22 +92,22 @@ public class BurgerTest {
         expectedIngredients.add(onion);
         expectedIngredients.add(meat);
 
-        burger.moveIngredient(2,0);
+        burger.moveIngredient(2, 0);
 
-        Assert.assertEquals(expectedIngredients,burger.ingredients);
+        Assert.assertEquals(expectedIngredients, burger.ingredients);
     }
 
     @Test
-    public void settingBuns(){
+    public void settingBuns() {
         Burger burger = new Burger();
 
         burger.setBuns(bun);
 
-        Assert.assertEquals(bun,burger.bun);
+        Assert.assertEquals(bun, burger.bun);
     }
 
     @Test
-    public void getPriceReturnsSumOfBunPriceAndIngredientsPrice(){
+    public void getPriceReturnsSumOfBunPriceAndIngredientsPrice() {
 
         Burger burger = new Burger();
 
@@ -116,18 +116,20 @@ public class BurgerTest {
         burger.addIngredient(sauce);
         burger.setBuns(bun);
 
+        float expectedPrice = 7.00F;
         float actualPrice = burger.getPrice();
+        float zeroDelta = 0.00F;
 
-        Mockito.verify(meat,Mockito.times(1)).getPrice();
-        Mockito.verify(onion,Mockito.times(1)).getPrice();
-        Mockito.verify(sauce,Mockito.times(1)).getPrice();
-        Assert.assertEquals(7.00F,actualPrice,0.00);
+        Mockito.verify(meat, Mockito.times(1)).getPrice();
+        Mockito.verify(onion, Mockito.times(1)).getPrice();
+        Mockito.verify(sauce, Mockito.times(1)).getPrice();
+        Assert.assertEquals(expectedPrice, actualPrice, zeroDelta);
 
 
     }
 
     @Test
-    public void getReceiptReturnsIngredientsAndBun(){
+    public void getReceiptReturnsIngredientsAndBun() {
         Burger burger = new Burger();
 
         burger.addIngredient(onion);
@@ -137,30 +139,30 @@ public class BurgerTest {
 
         String actualReceipt = burger.getReceipt();
 
-        Mockito.verify(meat,Mockito.times(1)).getPrice();
-        Mockito.verify(onion,Mockito.times(1)).getPrice();
-        Mockito.verify(sauce,Mockito.times(1)).getPrice();
+        Mockito.verify(meat, Mockito.times(1)).getPrice();
+        Mockito.verify(onion, Mockito.times(1)).getPrice();
+        Mockito.verify(sauce, Mockito.times(1)).getPrice();
 
-        Mockito.verify(bun,Mockito.times(1)).getPrice();
-        Mockito.verify(bun,Mockito.times(2)).getName();
+        Mockito.verify(bun, Mockito.times(1)).getPrice();
+        Mockito.verify(bun, Mockito.times(2)).getName();
 
-        Mockito.verify(meat,Mockito.times(1)).getName();
-        Mockito.verify(onion,Mockito.times(1)).getName();
-        Mockito.verify(sauce,Mockito.times(1)).getName();
+        Mockito.verify(meat, Mockito.times(1)).getName();
+        Mockito.verify(onion, Mockito.times(1)).getName();
+        Mockito.verify(sauce, Mockito.times(1)).getName();
 
-        Mockito.verify(meat,Mockito.times(1)).getType();
-        Mockito.verify(onion,Mockito.times(1)).getType();
-        Mockito.verify(sauce,Mockito.times(1)).getType();
+        Mockito.verify(meat, Mockito.times(1)).getType();
+        Mockito.verify(onion, Mockito.times(1)).getType();
+        Mockito.verify(sauce, Mockito.times(1)).getType();
 
-        String expectedReceipt = "(==== "+bun.getName()+" ====)\n"
-                +"= "+onion.getType().toString().toLowerCase()+" "+onion.getName()+" =\n"
-                +"= "+meat.getType().toString().toLowerCase()+" "+meat.getName()+" =\n"
-                +"= "+sauce.getType().toString().toLowerCase()+" "+sauce.getName()+" =\n"
-                +"(==== "+bun.getName()+" ====)\n"
-                +String.format("%nPrice: %f%n", onion.getPrice()+meat.getPrice()+sauce.getPrice()+bun.getPrice()*2);
+        String expectedReceipt = "(==== " + bun.getName() + " ====)\n"
+                + "= " + onion.getType().toString().toLowerCase() + " " + onion.getName() + " =\n"
+                + "= " + meat.getType().toString().toLowerCase() + " " + meat.getName() + " =\n"
+                + "= " + sauce.getType().toString().toLowerCase() + " " + sauce.getName() + " =\n"
+                + "(==== " + bun.getName() + " ====)\n"
+                + String.format("%nPrice: %f%n", onion.getPrice() + meat.getPrice() + sauce.getPrice() + bun.getPrice() * 2);
 
 
-        Assert.assertEquals(expectedReceipt,actualReceipt);
+        Assert.assertEquals(expectedReceipt, actualReceipt);
 
     }
 }
